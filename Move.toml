@@ -1,0 +1,11 @@
+[package]
+name = "FerraDLMM"
+version = "0.0.1"
+
+[dependencies]
+Sui = { git = "https://github.com/MystenLabs/sui.git", subdir = "crates/sui-framework/packages/sui-framework", rev = "mainnet-v1.35.4", override = true }
+
+[addresses]
+ferra_dlmm = "0x00"
+sui = "0x02"
+
