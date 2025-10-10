@@ -1,14 +1,15 @@
 module ferra_dlmm::lb_pair {
+    use std::type_name::{TypeName};
     use sui::object::{UID, ID};
     use sui::coin::{Coin};
     use sui::balance::{Balance};
     use sui::tx_context::{TxContext};
     use sui::clock::{Clock};
+
     use ferra_dlmm::lb_position::{LBPosition};
     use ferra_dlmm::rewarder::{RewarderManager, RewarderGlobalVault};
     use ferra_dlmm::bin_manager::{BinManager};
     use ferra_dlmm::lb_position::{LBPositionManager};
-    use std::type_name::{TypeName};
     use ferra_dlmm::config::{GlobalConfig};
     use ferra_dlmm::pair_parameter_helper::{PairParameters};
 
@@ -19,8 +20,6 @@ module ferra_dlmm::lb_pair {
         parameters: PairParameters,
         protocol_fee_x: u64,
         protocol_fee_y: u64,
-        lp_fee_x: u64,
-        lp_fee_y: u64,
         bin_manager: BinManager,
         position_manager: LBPositionManager,
         balance_x: Balance<X>,
@@ -60,11 +59,6 @@ module ferra_dlmm::lb_pair {
         fee_recipient: address,
         protocol_fees_x: u64,
         protocol_fees_y: u64,
-    }
-
-    struct OracleLengthIncreasedEvent has copy, drop {
-        sender: address,
-        new_length: u16,
     }
 
     struct ForcedDecayEvent has copy, drop {
@@ -109,37 +103,6 @@ module ferra_dlmm::lb_pair {
         position: ID,
         reward_type: TypeName,
         amount: u64,
-    }
-
-    struct FeeParametersQueriedEvent has copy, drop {
-        //static
-        base_factor: u32,
-        filter_period: u16,
-        decay_period: u16,
-        reduction_factor: u16,
-        variable_fee_control: u32,
-        protocol_share: u64,
-        max_volatility_accumulator: u32,
-        //volatiles
-        volatility_accumulator: u32,
-        volatility_reference: u32,
-        id_reference: u32,
-        time_of_last_update: u64,
-    }
-
-    struct OracleParametersQueriedEvent has copy, drop {
-        sample_lifetime: u8,
-        size: u16,
-        active_size: u16,
-        last_updated: u64,
-        first_timestamp: u64,
-    }
-
-    struct OracleSampleQueriedEvent has copy, drop {
-        time: u64,
-        cumulative_id: u64,
-        cumulative_volatility: u64,
-        cumulative_bin_crossed: u64,
     }
 
     struct PriceFromIdQueriedEvent has copy, drop {
@@ -219,7 +182,7 @@ module ferra_dlmm::lb_pair {
         abort 0
     }
 
-    public fun get_reserves<X, Y>(_pair: &LBPair<X, Y>): (u64, u64) {
+    public fun get_range_id<X, Y>(_pair: &LBPair<X, Y>): (u32, u32) {
         abort 0
     }
 
@@ -235,23 +198,11 @@ module ferra_dlmm::lb_pair {
         abort 0
     }
 
-    public fun get_static_fee_parameters<X, Y>(_pair: &LBPair<X, Y>): (u32, u16, u16, u16, u32, u16, u32, u32, u32, u32, u64) {
+    public fun get_price_from_id<X, Y>(_pair: &LBPair<X, Y>, _id: u32): u128 {
         abort 0
     }
 
-    public fun get_oracle_parameters<X, Y>(_pair: &LBPair<X, Y>): (u8, u16, u16, u64, u16) {
-        abort 0
-    }
-
-    public fun get_oracle_sample_at<X, Y>(_pair: &LBPair<X, Y>, _index: u16): (u64, u64, u64) {
-        abort 0
-    }
-
-    public fun get_price_from_id<X, Y>(_pair: &LBPair<X, Y>, _id: u32): u256 {
-        abort 0
-    }
-
-    public fun get_id_from_price<X, Y>(_pair: &LBPair<X, Y>, _price: u256): u32 {
+    public fun get_id_from_price<X, Y>(_pair: &LBPair<X, Y>, _price: u128): u32 {
         abort 0
     }
 
@@ -273,7 +224,22 @@ module ferra_dlmm::lb_pair {
         abort 0
     }
 
-public fun swap<X, Y>(
+    public(friend) fun new<X, Y>(
+        _active_id: u32,
+        _bin_step: u16,
+        _base_factor: u32,
+        _filter_period: u16,
+        _decay_period: u16,
+        _reduction_factor: u16,
+        _variable_fee_control: u32,
+        _protocol_share: u16,
+        _max_volatility_accumulator: u32,
+        _ctx: &mut TxContext,
+    ): LBPair<X, Y> {
+        abort 0
+    }
+
+    public fun swap<X, Y>(
         _config: &GlobalConfig,
         _pair: &mut LBPair<X, Y>,
         _swap_for_y: bool,
@@ -344,6 +310,14 @@ public fun swap<X, Y>(
         abort 0
     }
 
+    public fun get_pending_fees<X, Y>(
+        _pair: &LBPair<X, Y>,
+        _position: &LBPosition,
+        _bin_ids: vector<u32>
+    ): (u64, u64) {
+        abort 0
+    }
+
     public fun collect_position_fees<X, Y>(
         _config: &GlobalConfig,
         _pair: &mut LBPair<X, Y>,
@@ -351,6 +325,15 @@ public fun swap<X, Y>(
         _bin_ids: vector<u32>,
         _ctx: &mut TxContext
     ): (Coin<X>, Coin<Y>) {
+        abort 0
+    }
+
+    public fun get_pending_rewards<X, Y, RewardCoin>(
+        _pair: &LBPair<X, Y>,
+        _position: &LBPosition,
+        _bin_ids: vector<u32>,
+        _clock: &Clock
+    ): u64 {
         abort 0
     }
 
@@ -366,20 +349,10 @@ public fun swap<X, Y>(
         abort 0
     }
 
-    public fun get_pending_rewards<X, Y, RewardCoin>(
+    public fun get_reward_emission<X, Y, RewardCoin>(
         _pair: &LBPair<X, Y>,
-        _position: &LBPosition,
-        _bin_ids: vector<u32>,
-        _clock: &Clock
-    ): u64 {
-        abort 0
-    }
-
-    public fun collect_protocol_fees<X, Y>(
-        _pair: &mut LBPair<X, Y>,
-        _recipient: address,
-        _ctx: &mut TxContext
-    ): (Coin<X>, Coin<Y>) {
+        _clock: &Clock,
+    ): u128 {
         abort 0
     }
 
