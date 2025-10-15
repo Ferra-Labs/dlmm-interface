@@ -7,6 +7,5 @@ published-at = "0x5a5c1d10e4782dbbdec3eb8327ede04bd078b294b97cfdba447b11b846b383
 Sui = { git = "https://github.com/MystenLabs/sui.git", subdir = "crates/sui-framework/packages/sui-framework", rev = "mainnet-v1.35.4", override = true }
 
 [addresses]
-sui = "0x5a5c1d10e4782dbbdec3eb8327ede04bd078b294b97cfdba447b11b846b383ac"
-ferra_dlmm = "0x00"
+ferra_dlmm = "0x5a5c1d10e4782dbbdec3eb8327ede04bd078b294b97cfdba447b11b846b383ac"
 
