@@ -253,7 +253,7 @@ module ferra_dlmm::lb_pair {
     }
 
     public fun open_position<X, Y>(
-        _config: &mut GlobalConfig,
+        _config: &GlobalConfig,
         _pair: &mut LBPair<X, Y>,
         _ctx: &mut TxContext
     ): LBPosition {
@@ -261,7 +261,7 @@ module ferra_dlmm::lb_pair {
     }
 
     public fun lock_position<X, Y>(
-        _config: &mut GlobalConfig,
+        _config: &GlobalConfig,
         _pair: &mut LBPair<X, Y>,
         _position: &mut LBPosition,
         _lock_until: u64,
