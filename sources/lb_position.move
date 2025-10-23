@@ -47,32 +47,50 @@ module ferra_dlmm::lb_position {
     fun init(_witness: LB_POSITION, _ctx: &mut TxContext) {
         abort 0
     }
-    
+   
+    public(friend) fun create_empty_pack(): PackedBins {
+        abort 0
+    }
+
+    public(friend) fun borrow_position_bin_mut_from_pack(
+        _packed: &mut PackedBins,
+        _vector_index: u64
+    ): &mut LBBinPosition {
+        abort 0
+    }
+
+    public fun borrow_position_bin_from_pack(
+        _packed: &PackedBins,
+        _vector_index: u64
+    ): &LBBinPosition {
+        abort 0
+    }
+
+    public(friend) fun borrow_position_bins_mut(_info: &mut LBPositionInfo): &mut Table<u32, PackedBins> {
+        abort 0
+    }
+
+    public fun borrow_position_bins(_info: &LBPositionInfo): &Table<u32, PackedBins> {
+        abort 0
+    }
+
+    public(friend) fun resolve_bin_group_index(_bin_id: u32): (u32, u8) {
+        abort 0
+    }
+
+    public(friend) fun count_active_bins(_bitmap: u8): u8 {
+        abort 0
+    }
+
+    public(friend) fun count_active_bins_before_position(_bitmap: u8, _position: u8): u8 {
+        abort 0
+    }
+
     public(friend) fun borrow_bin_mut(_manager: &mut LBPositionManager, _position: &LBPosition, _bin_id: u32): &mut LBBinPosition {
         abort 0
     }
 
     public(friend) fun borrow_bin(_manager: &LBPositionManager, _position: &LBPosition, _bin_id: u32): &LBBinPosition {
-        abort 0
-    }
-
-    public(friend) fun contains_bin(_manager: &LBPositionManager, _position: &LBPosition, _bin_id: u32): bool {
-        abort 0
-    }
-
-    public(friend) fun add_bin(
-        _manager: &mut LBPositionManager,
-        _position: &mut LBPosition,
-        _bin_id: u32,
-        _new_bin_data: LBBinPosition,
-    ) {
-        abort 0
-    }
-
-    public(friend) fun remove_bin(_manager: &mut LBPositionManager,
-        _position: &mut LBPosition,
-        _bin_id: u32
-    ): bool {
         abort 0
     }
 
@@ -92,14 +110,6 @@ module ferra_dlmm::lb_position {
         abort 0
     }
 
-    public(friend) fun get_mut_position_saved_rewards(_position: &mut LBPosition): &mut vector<u64> {
-        abort 0
-    }
-
-    public fun get_position_saved_rewards(_position: &LBPosition): vector<u64> {
-        abort 0
-    }
-
     public(friend) fun increase_bin_liquidity(
         _bin: &mut LBBinPosition,
         _additional_share: u128,
@@ -112,14 +122,14 @@ module ferra_dlmm::lb_position {
         _bin: &mut LBBinPosition,
         _fee_growth_x: u128,
         _fee_growth_y: u128,
-    ): (u64, u64) {
+    ) {
         abort 0
     }
 
     public fun simulate_settle_position_rewards(
         _bin: &LBBinPosition,
         _reward_growths: vector<u128>,
-    ): vector<u64> {
+    ): vector<u128> {
         abort 0
     }
 
@@ -131,13 +141,20 @@ module ferra_dlmm::lb_position {
         abort 0
     }
 
+    public(friend) fun create_bin_in_pack(
+        _packed: &mut PackedBins,
+        _bin_id: u32,
+        _position_in_group: u8,
+    ){
+        abort 0
+    }
+
     public(friend) fun increase_position_total_bins(_position: &mut LBPosition, _bins_number: u64) {
         abort 0
     }
 
-
     public(friend) fun borrow_position_info(
-        _manager: &LBPositionManager, 
+        _manager: &LBPositionManager,
         _position: &LBPosition
     ): &LBPositionInfo {
         abort 0
@@ -173,16 +190,18 @@ module ferra_dlmm::lb_position {
         abort 0
     }
 
-    public fun is_empty_reward(_pos: &LBPosition): bool {
+    public fun is_empty_fees(_pos: &LBPosition): bool {
         abort 0
     }
 
+    public fun is_empty_reward(_pos: &LBPosition): bool {
+        abort 0
+    }
 
     public fun position_token_amount(_bin: &LBBinPosition): u128 {
         abort 0
     }
 
-    /// Get all active bins in a range
     public fun get_tokens_in_position(
         _manager: &LBPositionManager,
         _position: &LBPosition,
@@ -196,13 +215,13 @@ module ferra_dlmm::lb_position {
         _bin: &LBBinPosition,
         _current_fee_growth_x: u128,
         _current_fee_growth_y: u128,
-    ): (u64, u64) {
+    ): (u128, u128) {
         abort 0
     }
 
     public(friend) fun get_saved_fees(
         _position: &LBPosition,
-    ): (u64, u64) {
+    ): (u128, u128) {
         abort 0
     }
 
@@ -212,11 +231,10 @@ module ferra_dlmm::lb_position {
         abort 0
     }
 
-    // Get pending rewards collected
     public(friend) fun get_saved_rewards(
         _position: &LBPosition,
         _rewarder_index: u64,
-    ): u64 {
+    ): u128 {
         abort 0
     }
 
@@ -228,10 +246,6 @@ module ferra_dlmm::lb_position {
     }
 
     public(friend) fun lock_position(_position: &mut LBPosition, _lock_until_timestamp: u64) {
-        abort 0
-    }
-
-    public(friend) fun unlock_position(_position: &mut LBPosition) {
         abort 0
     }
 

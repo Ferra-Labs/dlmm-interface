@@ -284,7 +284,7 @@ module ferra_dlmm::lb_pair {
         _min_out_y: u64,
         _clock: &Clock,
         _ctx: &mut TxContext
-    ): (Coin<X>, Coin<Y>) {
+    ) {
         abort 0
     }
 
@@ -361,7 +361,7 @@ module ferra_dlmm::lb_pair {
         _pair: &mut LBPair<X, Y>,
         _is_token_x: bool,
         _amount: u64,
-    ): (FlashLoanReceipt, Coin<X>, Coin<Y>) {
+    ): (Balance<X>, Balance<Y>, FlashLoanReceipt) {
         abort 0
     }
 

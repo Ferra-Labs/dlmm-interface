@@ -37,16 +37,16 @@ module ferra_dlmm::lp_factory {
         _pairs: &mut Pairs,
         _active_id: u32,
         _bin_step: u16,
-        _bin_init: u32,
         _ctx: &mut TxContext,
     ) {
         abort 0
     }
 
-    public fun get_pair<X, Y>(
-        _pairs: &Pairs,
-        _bin_step: u16,
-    ): ID {
+    public fun index(_pairs: &Pairs): u64 {
+        abort 0
+    }
+
+    public fun coin_types(_pair_info: &PairSimpleInfo): (TypeName, TypeName) {
         abort 0
     }
 
@@ -54,25 +54,19 @@ module ferra_dlmm::lp_factory {
         abort 0
     }
 
-    public fun get_pair_info(
-        _pairs: &Pairs,
-        _pair_key: ID
-    ): &PairSimpleInfo {
+    public fun pair_id(_pair: &PairSimpleInfo): ID {
         abort 0
     }
 
-    public fun pair_exists(
-        _pairs: &Pairs,
-        _pair_key: ID
-    ): bool {
+    public fun pair_key(_pair: &PairSimpleInfo): ID {
         abort 0
     }
 
-    public fun get_all_pairs(_pairs: &Pairs): &Table<ID, PairSimpleInfo> {
+    public fun pool_simple_info(_pairs: &Pairs, _key: ID): &PairSimpleInfo {
         abort 0
     }
 
-    public fun get_pairs_count(_pairs: &Pairs): u64 {
+    public fun bin_step(_pair: &PairSimpleInfo): u32 {
         abort 0
     }
 }
