@@ -288,6 +288,23 @@ module ferra_dlmm::lb_pair {
         abort 0
     }
 
+    public fun add_liquidity_return_left_coin<X, Y>(
+        _config: &GlobalConfig,
+        _pair: &mut LBPair<X, Y>,
+        _position: &mut LBPosition,
+        _ids: vector<u32>,
+        _dists_x: vector<u64>,
+        _dists_y: vector<u64>,
+        _coin_x: Coin<X>,
+        _coin_y: Coin<Y>,
+        _min_out_x: u64,
+        _min_out_y: u64,
+        _clock: &Clock,
+        _ctx: &mut TxContext,
+    ): (Coin<X>, Coin<Y>) {
+        abort 0
+    }
+
     public fun remove_liquidity<X, Y>(
         _config: &GlobalConfig,
         _pair: &mut LBPair<X, Y>,
@@ -297,6 +314,20 @@ module ferra_dlmm::lb_pair {
         _min_amount_y: u64,
         _clock: &Clock,
         _ctx: &mut TxContext
+    ): (Coin<X>, Coin<Y>) {
+        abort 0
+    }
+
+    public fun remove_liquidity_by_percent<X, Y>(
+        _config: &GlobalConfig,
+        _pair: &mut LBPair<X, Y>,
+        _position: &mut LBPosition,
+        _ids: vector<u32>,
+        _percentage: u64,
+        _min_amount_x: u64,
+        _min_amount_y: u64,
+        _clock: &Clock,
+        _ctx: &mut TxContext,
     ): (Coin<X>, Coin<Y>) {
         abort 0
     }
